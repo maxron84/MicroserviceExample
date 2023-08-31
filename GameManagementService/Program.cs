@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient("PlayerServiceClient", client =>
 {
-    client.BaseAddress = new Uri("http://host.docker.internal:5224");
+    client.BaseAddress = new Uri("http://host.docker.internal:5224"); //"http://localhost:5224"
 });
 
 var app = builder.Build();
