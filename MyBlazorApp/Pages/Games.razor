@@ -1,0 +1,40 @@
+@page "/games"
+
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>Games</h3>
+
+<ul>
+    @foreach (var gametype in gametypes)
+    {
+        <li>@gametype.Name <button @onclick="() => PlayGame(gametype.Id)">Play</button></li>
+    }
+</ul>
+
+<p>@gameResult</p>
+
+@code {
+    private HttpClient? _httpClient;
+    private List<Gametype> gametypes = new List<Gametype>();
+    private string gameResult = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClient = HttpClientFactory.CreateClient("GameService");
+
+        var response = await _httpClient.GetAsync("api/games");
+        var content = await response.Content.ReadFromJsonAsync<List<Gametype>>();
+        if (content is not null)
+            gametypes = content;
+    }
+
+    private async Task PlayGame(int gameId)
+    {
+        _httpClient ??= HttpClientFactory.CreateClient("GameService");
+
+        var playerIds = new List<int> { 1, 2, 3 }; // Replace with actual player IDs
+        var response = await _httpClient.PostAsJsonAsync($"api/games/{gameId}/play", playerIds);
+
+        gameResult = response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : "Error playing the game.";
+    }
+}
