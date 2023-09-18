@@ -22,7 +22,7 @@ cd into /MyBlazorApp/:
 
   docker build -t myblazorapp-service .
 	
-  docker run -d -p 5062:80 --name my-blazor-app-service my-blazor-app-service
+  docker run -d -p 5062:80 --name blazor-service myblazorapp-service
   
 
 Prerequisites: You have already installed and set up Docker Desktop.
